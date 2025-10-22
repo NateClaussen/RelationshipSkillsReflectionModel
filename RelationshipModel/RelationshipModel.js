@@ -1,5 +1,5 @@
+//Get the canvas and context for drawing
 const canvas = document.getElementById("canvas");
-
 const ctx = canvas.getContext("2d");
 
 //All of the images for the demonstration
@@ -15,14 +15,9 @@ loveCouple.src = "images/loveCouple.png";
 const sadCouple = new Image();
 sadCouple.src = "images/sadCouple.png";
 
+//Global variables (might not be the best practice, but it works for this simple demo)
 var steps = [];
 var currentStep = 0;
-
-function restart() {
-	draw();
-	ctx.font = "bold 50px seriff";
-	ctx.fillText("Press Space to Start Race", 150, 50);
-}
 
 function draw() {
 	ctx.fillStyle = "green";
@@ -31,19 +26,19 @@ function draw() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	//Draw the steps on the screen
 	drawSteps();
-
 	//Draw the couple on the current step
 	ctx.drawImage(
 		getPic(),
 		steps[currentStep].X,
 		steps[currentStep].Y - neutralCouple.height
 	);
-
 	//draw the description text for each step
+	ctx.fillStyle = "red";
 	ctx.font = "50px seriff";
 	ctx.fillText(GetTextTitle(), 10, 50);
 }
 
+//Ideally, I'd probably make an object that has the picture and the text alltogether, but I'll keep it like this because it works lol.
 function GetTextTitle() {
 	if (currentStep == 0) {
 		return "Initiation - Let's begin!";
@@ -93,50 +88,13 @@ function getPic() {
 	}
 }
 
-// function update() {
-// 	ctx.font = "50px seriff";
-// 	ctx.fillText("Congrats! You Win!", 200, 50);
-// 	cancelAnimationFrame(gameLoop);
-// 	gameOver = true;
-// 	document.getElementById("btnStart").textContent = "Restart Race";
-
-// 	ctx.fillText("Boo Hoo, You LOSE!", 200, 50);
-// 	cancelAnimationFrame(gameLoop);
-// 	gameOver = true;
-// 	document.getElementById("btnStart").textContent = "Restart Race";
-// }
-
-// function gameLoop() {
-// 	draw();
-// 	update();
-// 	if (!gameOver) {
-// 		requestAnimationFrame(gameLoop);
-// 	}
-// }
-
-document.body.onload = function () {
-	draw();
-	//restart();
-};
-
+//Movement for the steps and getting the couple to move through the relationship model
 document.onkeydown = function (e) {
-	if (e.key == "e") {
-		player.x += 100;
-	}
-	if (e.key == "q") {
-		player.x -= 100;
-	}
 	if (e.key == "a") {
 		if (currentStep > 0) {
 			currentStep--;
 			draw();
 		}
-	}
-	if (e.key == "w") {
-		player.y -= speed;
-	}
-	if (e.key == "s") {
-		player.y += speed;
 	}
 	if (e.key == "d") {
 		if (currentStep < steps.length - 1) {
@@ -144,14 +102,12 @@ document.onkeydown = function (e) {
 			draw();
 		}
 	}
-	if (e.key == " " && gameReady) {
-		requestAnimationFrame(gameLoop);
-	}
 };
 
 function drawSteps() {
 	let currentX = canvas.width * 0.01;
 	let currentY = canvas.height * 0.9;
+	//Clear array so we have the most current information
 	steps = [];
 	steps.push({ X: currentX, Y: currentY });
 	//(X, Y, Width, Height))
@@ -178,13 +134,7 @@ function drawSteps() {
 	console.log(currentStep);
 }
 
-// document.getElementById("btnStart").onclick = function () {
-// 	gameOver = true;
-// 	gameReady = false;
-// 	restart();
-// };
-
-//Make canvas resize depending on the screen size :)... definitely not perfect, but it works enough for this assignment lol.
+//Make canvas resize depending on the screen size :)... definitely not perfect the way it scales, but it works enough for this assignment lol.
 window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
@@ -202,3 +152,7 @@ function resizeCanvas() {
 	}
 	draw();
 }
+
+document.body.onload = function () {
+	draw();
+};
