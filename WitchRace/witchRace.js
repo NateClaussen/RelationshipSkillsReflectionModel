@@ -1,7 +1,5 @@
 const canvas = document.getElementById("canvas");
 
-var finishline = canvas.width - 200;
-
 const ctx = canvas.getContext("2d");
 
 //All of the images for the demonstration
@@ -14,13 +12,13 @@ happyCouple.src = "images/happyCouple.png";
 const loveCouple = new Image();
 loveCouple.src = "images/loveCouple.png";
 
-const player1Img = new Image();
-player1Img.src = "images/pinkHat.png";
-
-const player2Img = new Image();
-player2Img.src = "images/purpleHat.png";
+const sadCouple = new Image();
+sadCouple.src = "images/sadCouple.png";
 
 const speed = 5;
+var finishline = canvas.width - 200;
+var steps = [];
+var currentStep = 0;
 let gameOver = false;
 let gameReady = false;
 
@@ -29,15 +27,9 @@ let player = {
 	y: 100,
 };
 
-let comp = {
-	x: 10,
-	y: 200,
-};
-
 function restart() {
 	gameOver = false;
 	player.x = 10;
-	comp.x = 10;
 	gameReady = true;
 	draw();
 	ctx.font = "bold 50px seriff";
@@ -45,32 +37,57 @@ function restart() {
 }
 
 function draw() {
-	finishline = canvas.width - 200;
+	ctx.fillStyle = "green";
+	//Clear the canvas to start with a blank slate
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	//Draw the finish line
-	ctx.fillRect(finishline, 0, 10, canvas.height);
+	drawSteps();
+
 	//Draw the player on the screen
-	ctx.drawImage(player1Img, player.x, player.y);
-	//Draw the opponent on the screen
-	ctx.drawImage(player2Img, comp.x, comp.y);
+	ctx.drawImage(
+		getPic(),
+		steps[currentStep].X,
+		steps[currentStep].Y - neutralCouple.height
+	);
+}
+
+function getPic() {
+	switch (currentStep) {
+		case 0:
+		case 1:
+			return neutralCouple;
+		case 2:
+		case 3:
+			return happyCouple;
+		case 4:
+		case 5:
+			return loveCouple;
+		case 6:
+			return happyCouple;
+		case 7:
+		case 8:
+			return neutralCouple;
+		case 9:
+		case 10:
+			return sadCouple;
+		default:
+			return neutralCouple;
+	}
 }
 
 function update() {
 	finishline = canvas.width - 200;
-	if (player.x > finishline && comp.x < player.x) {
+	if (player.x > finishline) {
 		ctx.font = "50px seriff";
 		ctx.fillText("Congrats! You Win!", 200, 50);
 		cancelAnimationFrame(gameLoop);
 		gameOver = true;
 		document.getElementById("btnStart").textContent = "Restart Race";
-	} else if (comp.x > finishline && player.x < comp.x) {
+	} else if (false) {
 		ctx.fillText("Boo Hoo, You LOSE!", 200, 50);
 		cancelAnimationFrame(gameLoop);
 		gameOver = true;
 		document.getElementById("btnStart").textContent = "Restart Race";
 	}
-
-	comp.x += 1;
 }
 
 function gameLoop() {
@@ -83,6 +100,7 @@ function gameLoop() {
 
 document.body.onload = function () {
 	draw();
+	restart();
 };
 
 document.onkeydown = function (e) {
@@ -93,7 +111,10 @@ document.onkeydown = function (e) {
 		player.x -= 100;
 	}
 	if (e.key == "a") {
-		player.x -= speed;
+		if (currentStep > 0) {
+			currentStep--;
+			draw();
+		}
 	}
 	if (e.key == "w") {
 		player.y -= speed;
@@ -102,12 +123,44 @@ document.onkeydown = function (e) {
 		player.y += speed;
 	}
 	if (e.key == "d") {
-		player.x += speed;
+		if (currentStep < steps.length - 1) {
+			currentStep++;
+			draw();
+		}
 	}
 	if (e.key == " " && gameReady) {
 		requestAnimationFrame(gameLoop);
 	}
 };
+
+function drawSteps() {
+	let currentX = canvas.width * 0.01;
+	let currentY = canvas.height * 0.9;
+	steps = [];
+	steps.push({ X: currentX, Y: currentY });
+	//(X, Y, Width, Height))
+	//steps going up
+	for (let i = 0; i < 5; i++) {
+		ctx.fillRect(currentX, currentY, 10, 100);
+		ctx.fillRect(currentX, currentY, 100, 10);
+		currentX += 100;
+		currentY -= 90;
+		if (i < 4) steps.push({ X: currentX, Y: currentY });
+	}
+	//Reset the Y position for the flat part of the top of the stairs
+	currentY += 90;
+	//Steps going down
+	for (let i = 0; i < 5; i++) {
+		steps.push({ X: currentX + 10, Y: currentY });
+		ctx.fillRect(currentX, currentY, 100, 10);
+		currentX += 100;
+		ctx.fillRect(currentX, currentY, 10, 100);
+		//currentX += 100;
+		currentY += 90;
+	}
+	console.log(steps);
+	console.log(currentStep);
+}
 
 document.getElementById("btnStart").onclick = function () {
 	gameOver = true;
@@ -115,14 +168,15 @@ document.getElementById("btnStart").onclick = function () {
 	restart();
 };
 
-//Make canvas resize depending on the screen size :)
+//Make canvas resize depending on the screen size :)... definitely not perfect, but it works enough for this assignment lol.
 window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
 function resizeCanvas() {
 	const aspectRatio = 16 / 9;
-	const width = window.innerWidth * 0.9;
+	const width = window.innerWidth * 0.7;
 	const height = window.innerHeight * 0.85;
+
 	if (width / height > aspectRatio) {
 		canvas.width = height * aspectRatio;
 		canvas.height = height;
