@@ -131,7 +131,7 @@ function drawSteps() {
 		currentY += 90;
 	}
 	// console.log(steps);
-	console.log(currentStep);
+	//console.log(currentStep);
 }
 
 //Make canvas resize depending on the screen size :)... definitely not perfect the way it scales, but it works enough for this assignment lol.
