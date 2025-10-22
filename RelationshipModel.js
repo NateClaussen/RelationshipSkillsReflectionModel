@@ -4,16 +4,16 @@ const ctx = canvas.getContext("2d");
 
 //All of the images for the demonstration
 const neutralCouple = new Image();
-neutralCouple.src = "images/neutralCouple.png";
+neutralCouple.src = "images/NeutralCouple.png";
 
 const happyCouple = new Image();
-happyCouple.src = "images/happyCouple.png";
+happyCouple.src = "images/HappyCouple.png";
 
 const loveCouple = new Image();
-loveCouple.src = "images/loveCouple.png";
+loveCouple.src = "images/LoveCouple.png";
 
 const sadCouple = new Image();
-sadCouple.src = "images/sadCouple.png";
+sadCouple.src = "images/SadCouple.png";
 
 //Global variables (might not be the best practice, but it works for this simple demo)
 var steps = [];
