@@ -51,14 +51,20 @@ function draw() {
 	//draw the description text for each step
 	ctx.fillStyle = "red";
 
-	if (window.innerWidth > 1000) {
+	if (window.innerWidth > 1400) {
 		ctx.font = "50px seriff";
-	} else if (window.innerWidth > 600) {
+		ctx.fillText(GetTextTitle(), 10, 50);
+	} else if (window.innerWidth > 1200) {
 		ctx.font = "40px seriff";
+		ctx.fillText(GetTextTitle(), 10, 40);
+	} else if (window.innerWidth > 1000) {
+		ctx.font = "20px seriff";
+		ctx.fillText(GetTextTitle(), 10, 20);
 	} else {
-		ctx.font = "30px seriff";
+		ctx.font = "15px seriff";
+		ctx.fillText(GetTextTitle(), 10, 15);
 	}
-	ctx.fillText(GetTextTitle(), 10, 50);
+	//ctx.fillText(GetTextTitle(), 10, 50);
 }
 
 //Ideally, I'd probably make an object that has the picture and the text alltogether, but I'll keep it like this because it works lol.
