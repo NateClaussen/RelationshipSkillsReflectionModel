@@ -165,7 +165,7 @@ btnRight.addEventListener("click", function () {
 });
 
 function drawSteps() {
-	let currentX = canvas.width * 0.01;
+	let currentX = 2; //canvas.width * 0.01;
 	let currentY = canvas.height * 0.9;
 	//Clear array so we have the most current information
 
