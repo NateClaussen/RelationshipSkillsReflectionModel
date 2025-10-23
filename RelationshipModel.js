@@ -41,32 +41,15 @@ function draw() {
 	//Draw the steps on the screen
 	drawSteps();
 
-	// ctx.drawImage(
-	// 	getPic(),
-	// 	steps[currentStep].X,
-	// 	steps[currentStep].Y - neutralCouple.height,
-	// 	currentWidth,
-	// 	neutralCouple.height
-	// );
-
 	//Draw the couple on the current step
-	if (window.innerWidth > 1100) {
-		ctx.drawImage(
-			getPic(),
-			steps[currentStep].X,
-			steps[currentStep].Y - neutralCouple.height,
-			currentWidth,
-			neutralCouple.height
-		);
-	} else {
-		ctx.drawImage(
-			getPic(),
-			steps[currentStep].X,
-			steps[currentStep].Y - neutralCouple.height / 2,
-			currentWidth,
-			neutralCouple.height - neutralCouple.height / 2
-		);
-	}
+	ctx.drawImage(
+		getPic(),
+		steps[currentStep].X,
+		steps[currentStep].Y - currentWidth,
+		currentWidth,
+		currentWidth
+	);
+
 	//draw the description text for each step
 	ctx.fillStyle = "red";
 
