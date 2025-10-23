@@ -2,8 +2,6 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-const aspectRatio = 16 / 9;
-
 const btnLeft = document.getElementById("btnLeft");
 const btnRight = document.getElementById("btnRight");
 
@@ -30,8 +28,10 @@ const sadCouple = new Image();
 sadCouple.src = "images/SadCouple.png";
 
 //Global variables (might not be the best practice, but it works for this simple demo)
+const aspectRatio = 16 / 9;
 var steps = [];
 var currentStep = 0;
+var currentWidth = 100;
 
 function draw() {
 	ctx.fillStyle = "green";
@@ -44,11 +44,20 @@ function draw() {
 	ctx.drawImage(
 		getPic(),
 		steps[currentStep].X,
-		steps[currentStep].Y - neutralCouple.height
+		steps[currentStep].Y - neutralCouple.height,
+		currentWidth,
+		neutralCouple.height
 	);
 	//draw the description text for each step
 	ctx.fillStyle = "red";
-	ctx.font = "50px seriff";
+
+	if (window.innerWidth > 1000) {
+		ctx.font = "50px seriff";
+	} else if (window.innerWidth > 600) {
+		ctx.font = "40px seriff";
+	} else {
+		ctx.font = "30px seriff";
+	}
 	ctx.fillText(GetTextTitle(), 10, 50);
 }
 
@@ -133,14 +142,14 @@ document.onkeydown = function (e) {
 	}
 };
 btnLeft.addEventListener("click", function () {
-	btnLeft.blur();
+	//btnLeft.blur();
 	const event = new KeyboardEvent("keydown", {
 		key: "a",
 	});
 	document.dispatchEvent(event);
 });
 btnRight.addEventListener("click", function () {
-	btnRight.blur();
+	//btnRight.blur();
 	const event = new KeyboardEvent("keydown", {
 		key: "d",
 	});
@@ -151,27 +160,34 @@ function drawSteps() {
 	let currentX = canvas.width * 0.01;
 	let currentY = canvas.height * 0.9;
 	//Clear array so we have the most current information
+
+	//Dynamically draw the steps based on the canvas size
+	const stepWidth = canvas.width * 0.01;
+	const stepHeight = (canvas.height * 0.7) / 4;
+
+	currentWidth = stepHeight;
+
 	steps = [];
 	steps.push({ X: currentX, Y: currentY });
 	//(X, Y, Width, Height))
 	//steps going up
 	for (let i = 0; i < 5; i++) {
-		ctx.fillRect(currentX, currentY, 10, 100);
-		ctx.fillRect(currentX, currentY, 100, 10);
-		currentX += 100;
-		currentY -= 90;
+		ctx.fillRect(currentX, currentY, stepWidth, stepHeight);
+		ctx.fillRect(currentX, currentY, stepHeight, stepWidth);
+		currentX += stepHeight;
+		currentY -= stepHeight - stepWidth;
 		if (i < 4) steps.push({ X: currentX, Y: currentY });
 	}
 	//Reset the Y position for the flat part of the top of the stairs
-	currentY += 90;
+	currentY += stepHeight - stepWidth;
 	//Steps going down
 	for (let i = 0; i < 5; i++) {
 		steps.push({ X: currentX + 10, Y: currentY });
-		ctx.fillRect(currentX, currentY, 100, 10);
-		currentX += 100;
-		ctx.fillRect(currentX, currentY, 10, 100);
+		ctx.fillRect(currentX, currentY, stepHeight, stepWidth);
+		currentX += stepHeight;
+		ctx.fillRect(currentX, currentY, stepWidth, stepHeight);
 		//currentX += 100;
-		currentY += 90;
+		currentY += stepHeight - stepWidth;
 	}
 	// console.log(steps);
 	//console.log(currentStep);
