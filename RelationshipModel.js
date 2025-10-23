@@ -40,14 +40,33 @@ function draw() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	//Draw the steps on the screen
 	drawSteps();
+
+	// ctx.drawImage(
+	// 	getPic(),
+	// 	steps[currentStep].X,
+	// 	steps[currentStep].Y - neutralCouple.height,
+	// 	currentWidth,
+	// 	neutralCouple.height
+	// );
+
 	//Draw the couple on the current step
-	ctx.drawImage(
-		getPic(),
-		steps[currentStep].X,
-		steps[currentStep].Y - neutralCouple.height,
-		currentWidth,
-		neutralCouple.height
-	);
+	if (window.innerWidth > 1100) {
+		ctx.drawImage(
+			getPic(),
+			steps[currentStep].X,
+			steps[currentStep].Y - neutralCouple.height,
+			currentWidth,
+			neutralCouple.height
+		);
+	} else {
+		ctx.drawImage(
+			getPic(),
+			steps[currentStep].X,
+			steps[currentStep].Y - neutralCouple.height / 2,
+			currentWidth,
+			neutralCouple.height - neutralCouple.height / 2
+		);
+	}
 	//draw the description text for each step
 	ctx.fillStyle = "red";
 
@@ -204,7 +223,7 @@ window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
 function resizeCanvas() {
-	const width = window.innerWidth * 0.7;
+	const width = window.innerWidth * 0.85;
 	const height = window.innerHeight * 0.85;
 
 	if (width / height > aspectRatio) {
