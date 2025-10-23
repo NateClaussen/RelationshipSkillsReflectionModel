@@ -2,6 +2,11 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
+const aspectRatio = 16 / 9;
+
+const btnLeft = document.getElementById("btnLeft");
+const btnRight = document.getElementById("btnRight");
+
 //All of the images for the demonstration
 const neutralCouple = new Image();
 neutralCouple.src = "images/NeutralCouple.png";
@@ -9,8 +14,17 @@ neutralCouple.src = "images/NeutralCouple.png";
 const happyCouple = new Image();
 happyCouple.src = "images/HappyCouple.png";
 
+const happyCouple2 = new Image();
+happyCouple2.src = "images/HappyCouple2.png";
+
 const loveCouple = new Image();
 loveCouple.src = "images/LoveCouple.png";
+
+const loveCouple2 = new Image();
+loveCouple2.src = "images/LoveCouple2.png";
+
+const smirkCouple = new Image();
+smirkCouple.src = "images/SmirkCouple.png";
 
 const sadCouple = new Image();
 sadCouple.src = "images/SadCouple.png";
@@ -70,14 +84,17 @@ function getPic() {
 		case 1:
 			return neutralCouple;
 		case 2:
+			return smirkCouple;
 		case 3:
-			return happyCouple;
+			return happyCouple2;
 		case 4:
+			return loveCouple2;
 		case 5:
 			return loveCouple;
 		case 6:
 			return happyCouple;
 		case 7:
+			return happyCouple;
 		case 8:
 			return neutralCouple;
 		case 9:
@@ -102,7 +119,33 @@ document.onkeydown = function (e) {
 			draw();
 		}
 	}
+	if (e.key == "ArrowLeft") {
+		if (currentStep > 0) {
+			currentStep--;
+			draw();
+		}
+	}
+	if (e.key == "ArrowRight") {
+		if (currentStep < steps.length - 1) {
+			currentStep++;
+			draw();
+		}
+	}
 };
+btnLeft.addEventListener("click", function () {
+	btnLeft.blur();
+	const event = new KeyboardEvent("keydown", {
+		key: "a",
+	});
+	document.dispatchEvent(event);
+});
+btnRight.addEventListener("click", function () {
+	btnRight.blur();
+	const event = new KeyboardEvent("keydown", {
+		key: "d",
+	});
+	document.dispatchEvent(event);
+});
 
 function drawSteps() {
 	let currentX = canvas.width * 0.01;
@@ -139,7 +182,6 @@ window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
 function resizeCanvas() {
-	const aspectRatio = 16 / 9;
 	const width = window.innerWidth * 0.7;
 	const height = window.innerHeight * 0.85;
 

@@ -34,6 +34,20 @@
 				padding: 100px;
 				background-color: wheat;
 			}
+			.btnHolder {
+				width: 70%;
+				margin: auto;
+				/*border: 2px solid black;*/
+				display: flex;
+				justify-content: center;
+			}
+			.btn-light {
+				text-align: center;
+				font-size: 3em;
+				padding: 0px 20px 10px 20px;
+				background-color: lightgray;
+				margin: 20px;
+			}
 		</style>
 	</head>
 	<body>
@@ -44,6 +58,10 @@
 			id="canvas"
 			style="border: 1px solid black; display: block; margin: auto"
 		></canvas>
+		<div class="btnHolder">
+			<button id="btnLeft" class="btn-light">&#8592;</button>
+			<button id="btnRight" class="btn-light">&#8594;</button>
+		</div>
 		<br />
 		<div class="explain">
 			<h2>Explanation</h2>
