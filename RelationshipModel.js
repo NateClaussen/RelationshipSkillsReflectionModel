@@ -109,7 +109,7 @@ function getPic() {
 		case 5:
 			return loveCouple;
 		case 6:
-			return happyCouple;
+			return smirkCouple;
 		case 7:
 			return happyCouple;
 		case 8:
