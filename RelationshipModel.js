@@ -207,7 +207,7 @@ function drawSteps() {
 	currentY += stepHeight - stepWidth;
 	//Steps going down
 	for (let i = 0; i < 5; i++) {
-		steps.push({ X: currentX + 10, Y: currentY });
+		steps.push({ X: currentX + stepWidth, Y: currentY });
 		ctx.fillRect(currentX, currentY, stepHeight, stepWidth);
 		currentX += stepHeight;
 		ctx.fillRect(currentX, currentY, stepWidth, stepHeight);
